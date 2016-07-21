@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>MQTT Mosquitto Assignment</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        h4 span {
+            font-family: monospace;
+        }
+        
+        .sensorValues {
+            border: 1px solid black;
+            width: 40px;
+            height: 25px;
+            display: block;
+            float: left;
+            margin-left: 10px;
+            padding-left: 5px;
+        }
+    </style>
+</head>
+
+<body ng-app="DropCam">
+
+    <div class="container" ng-controller="dropcamController">
+        <h2>Drop Cam</h2>
+        <!---CONNECTION--->
+        <div class="row">
+            <h3 style="padding-left: 15px;">Connection</h3>
+            <div class="col-md-3">
+                <h4><span class="label label-default">Host</span></h4>
+                <input type="text" name="host" ng-model="host" />
+            </div>
+            <div class="col-md-3">
+                <h4><span class="label label-default">Port</span></h4>
+                <input type="number" name="port" ng-model="port" />
+            </div>
+            <div class="col-md-3">
+                <h4><span class="label label-default">Client ID</span></h4>
+                <input type="text" name="client_id" ng-model="clientID" />
+            </div>
+
+            <div class="col-md-4" style="margin-top: 20px;">
+                <button ng-click="connect_mosquitto()" type="button" class="btn btn-primary" ng-bind="buttonVal">
+                    Connect
+                </button>
+                <br/>
+                <br/>
+
+                <div class="alert" ng-class="Status==='Connected' ? 'alert-success' : 'alert-danger'" role="alert">
+                    {{Status}}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3>Subscription</h3>
+
+                <div class="alert alert-dismissable alert-success" ng-repeat="topic in topics">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="unSubscribe()">
+                        ×
+                    </button>
+                    <h4 ng-bind="topic"></h4>
+                </div>
+            </div>
+        </div>
+        <!---Connection End---------->
+        <div class="row">
+            <div class="col-md-8">
+                <canvas id="canvas-video" width="640" height="480"></canvas>
+            </div>
+            <div class="col-md-4">
+                <input type="range" max="180" min="0" value="0" ng-model="angle" ng-change="move()"/>
+                <br/>
+                <span ng-bind="angle"></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="mqttws31.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
